@@ -44,7 +44,7 @@ class DocumentController:
             r = requests.post(url, data = json.dumps(body))
             r = r.json()
             tags = [ann["description"] for ann in r['responses'][0]['labelAnnotations']]
-            print(tags)
+            return tags
 
 
     def uploadCSV(self, csvPath):
