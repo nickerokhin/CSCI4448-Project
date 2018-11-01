@@ -1,13 +1,16 @@
 import requests 
 import json
 import base64
-
+from Image import Image
+import os
+import pickle
+from SearchIndex import SearchIndex
 
 class DocumentController:
 
 
     def __init__(self, documents):
-        self.__documents = documents
+        self.__documents = []
         self.__credentials = json.loads(open("apicreds.json", "r").read())
         self.__APIKEY = self.__credentials["api_key"]
         
@@ -18,6 +21,11 @@ class DocumentController:
     def removeDocument(self, docPath):
         self.__documents.remove(docPath)
 
+    def addDocuments(self, docArray):
+        self.__documents += docArray
+
+    def getDocuments(self):
+        return self.__documents
     #def getb64encoding(self, docPath):
 
 
@@ -47,6 +55,7 @@ class DocumentController:
             return tags
 
 
+
     def uploadCSV(self, csvPath):
         pass
 
@@ -59,5 +68,21 @@ class DocumentController:
 
 
 
+#imList = os.listdir('./ims')
 doc = DocumentController(None)
-doc.getTagsFromCloud("tesimg.jpg")
+#tagsArray = [doc.getTagsFromCloud("./ims/" + path) for path in imList]
+#ImagesArray = [Image(imList[path], True, False, "./ims/" + imList[path], tagsArray[path]) for path in range(0, len(tagsArray))]
+#out = open("pickedims", "wb")
+#pickle.dump(ImagesArray, out)
+#out.close()
+infile = open("pickedims", "rb")
+ImagesArray = pickle.load(infile)
+infile.close()
+doc.addDocuments(ImagesArray)
+docs = doc.getDocuments()
+searchIndex = SearchIndex()
+searchIndex.createVectorIndexMap(docs)
+searchIndex.setDocumentCount(len(docs))
+searchIndex.createDocumentMatrixMap(docs)
+searchIndex.constructDocumentMatrix(docs)
+#searchIndex.createDocumentVector(docs[0])
