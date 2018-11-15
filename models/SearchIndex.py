@@ -1,13 +1,25 @@
-from DocumentVector import DocumentVector
+from models.DocumentVector import DocumentVector
 import numpy as np
 from scipy import spatial
 
 
 
 class SearchIndex:
+    __instance = None
+
+    @staticmethod
+    def getInstance():
+        if SearchIndex.__instance == None:
+            SearchIndex()
+        return SearchIndex.__instance
 
     def __init__(self, columnSize = None, documentCount = None, documentMatrixMap = None, \
                 documentMap = None, tagVectorIndexMap = None, threshold = None):
+
+        if SearchIndex.__instance != None:
+            raise Exception("What are you doing")
+        else:
+            SearchIndex.__instance = self
 
         self.__documentMatrix = None
 
