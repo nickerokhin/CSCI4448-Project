@@ -1,10 +1,14 @@
-import requests 
+import requests
+import sys
+sys.path.append('../')
+sys.path.append('../models')
+sys.path.append('../views')
 import json
 import base64
-from Image import Image
+from models.Image import Image
 import os
 import pickle
-from SearchIndex import SearchIndex
+from models.SearchIndex import SearchIndex
 
 class DocumentController:
 
