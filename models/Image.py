@@ -1,4 +1,5 @@
-from Document import Document
+import sys
+from models.Document import Document
 
 
 class Image(Document):

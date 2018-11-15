@@ -4,6 +4,7 @@ sys.path.append('../models')
 sys.path.append('../views')
 #from controller.Command import Command
 from controller.DocumentController import DocumentController
+from controller.Command import *
 
 class UserController:
 
@@ -11,6 +12,9 @@ class UserController:
         self.arguments = None
         self.__documents = documents
         self.__searchIndex = searchIndex
+        self.__doc = DocumentController(self.__documents, self.__searchIndex)
+        self.__invoker = Invoker()
+        self.__commandFactory = CommandFactory(self.__searchIndex, self.__doc, self.__invoker)
 
     def getArguments(self):
         return self.arguments
@@ -20,6 +24,7 @@ class UserController:
 
     def parseArguments(self):
         args = self.arguments.split(" ")
+        finalArguments = []
         for i in range(0, len(args)):
             if args[i] == "search":
                 if args[i + 1] == "q/":
@@ -41,21 +46,19 @@ class UserController:
                     querytokens = querytokens.split(",")
                     for i in range(0, len(querytokens)):
                         querytokens[i] = querytokens[i].strip()
-                    print(querytokens)
+                    finalArguments.append(("search", querytokens))
+        return finalArguments
+
+    def createCommands(self, arguments):
+        inv = self.__commandFactory.makeCommandsFromArguments(arguments)
+        return inv
+
+    def executeInvokerCommands(self, inv):
+        inv.executeCommands()
+
+
                         
 
-
-    def run(self):
-        #Check for existing searchIndex here 
-        doc = DocumentController(self.__documents, self.__searchIndex)
-        print('''Welcome to ImageSearch. \nYou have {} images in the index\nFor instructions, type "man"\nPlease type your instructions below...
-                 
-                 
-                  '''.format(5))
-        while True:
-            args = input(">")
-            self.setArguments(args)
-            self.parseArguments()
 
 
 

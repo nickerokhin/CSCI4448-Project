@@ -30,6 +30,10 @@ class SearchResults:
         pass 
 
     def displayResults(self):
-        pass
+        print("Your query was {}".format(" ".join(self.__queryTags)))
+        print("Showing {} results for your query\n".format(len(self.__queryResults)))
+        
+        for i in self.__queryResults:
+            print(i + "\n")
 
 

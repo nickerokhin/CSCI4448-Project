@@ -13,7 +13,7 @@ class DocumentController:
 
     def __init__(self, documents, searchIndex):
         self.__documents = []
-        self.__credentials = json.loads(open("apicreds.json", "r").read())
+        self.__credentials = json.loads(open("./controller/apicreds.json", "r").read())
         self.__APIKEY = self.__credentials["api_key"]
         self.__searchIndex = searchIndex
 
