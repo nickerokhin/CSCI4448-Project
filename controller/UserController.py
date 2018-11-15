@@ -2,13 +2,15 @@ import sys
 sys.path.append('../')
 sys.path.append('../models')
 sys.path.append('../views')
-import Command
-import DocumentController
+#from controller.Command import Command
+from controller.DocumentController import DocumentController
 
 class UserController:
 
-    def __init__(self):
+    def __init__(self, documents, searchIndex):
         self.arguments = None
+        self.__documents = documents
+        self.__searchIndex = searchIndex
 
     def getArguments(self):
         return self.arguments
@@ -45,7 +47,7 @@ class UserController:
 
     def run(self):
         #Check for existing searchIndex here 
-
+        doc = DocumentController(self.__documents, self.__searchIndex)
         print('''Welcome to ImageSearch. \nYou have {} images in the index\nFor instructions, type "man"\nPlease type your instructions below...
                  
                  
@@ -55,10 +57,5 @@ class UserController:
             self.setArguments(args)
             self.parseArguments()
 
-
-
-
-userCont = UserController()
-userCont.run()
 
 

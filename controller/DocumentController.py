@@ -1,8 +1,6 @@
 import requests
 import sys
 sys.path.append('../')
-sys.path.append('../models')
-sys.path.append('../views')
 import json
 import base64
 from models.Image import Image
@@ -13,11 +11,13 @@ from models.SearchIndex import SearchIndex
 class DocumentController:
 
 
-    def __init__(self, documents):
+    def __init__(self, documents, searchIndex):
         self.__documents = []
         self.__credentials = json.loads(open("apicreds.json", "r").read())
         self.__APIKEY = self.__credentials["api_key"]
-        
+        self.__searchIndex = searchIndex
+
+
 
     def addDocument(self, docPath):
         self.__documents.append(docPath)
@@ -73,12 +73,12 @@ class DocumentController:
 
 
 #imList = os.listdir('./ims')
-doc = DocumentController(None)
 #tagsArray = [doc.getTagsFromCloud("./ims/" + path) for path in imList]
 #ImagesArray = [Image(imList[path], True, False, "./ims/" + imList[path], tagsArray[path]) for path in range(0, len(tagsArray))]
 #out = open("pickedims", "wb")
 #pickle.dump(ImagesArray, out)
 #out.close()
+'''
 infile = open("pickedims", "rb")
 ImagesArray = pickle.load(infile)
 infile.close()
@@ -91,6 +91,10 @@ searchIndex.createDocumentMatrixMap(docs)
 searchIndex.constructDocumentMatrix(docs)
 queryVector = ["t shirt", "arm", "technology", "product"]
 results = searchIndex.search(queryVector)
+out = open("searchindex", "wb")
+pickle.dump(searchIndex, out)
+out.close()
 
 print(searchIndex.listResultIms(results))
 #searchIndex.createDocumentVector(docs[0])
+'''
