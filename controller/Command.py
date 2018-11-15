@@ -1,26 +1,49 @@
 import abc
+from views.SearchResults import SearchResults
 
 class Invoker:
 
     def __init__(self):
         self.__commands = []
     
-    def store_command(self, command):
+    def storeCommand(self, command):
         self.__commands.append(command)
 
-    def execute_commands(self):
+    def executeCommands(self):
         for command in self.__commands:
             command.execute()
 
-class Command(metaclass = abc.ABCMeta):
-    def __init__(self, receiver):
-        self.__receiver = receiver
-    
-    @abc.abstractmethod
+
+class CommandFactory():
+
+    def __init__(self, searchIndex, documentController):
+        self.__searchIndex = searchIndex
+        self.__documentController = documentController
+
+    def factory(self, typ):
+        if typ[0] == "search":
+            return Search(typ[0], self.__searchIndex)
+
+    def makeCommandsFromArguments(self, args):
+        invoker = Invoker()
+        for arg in args:
+            invoker.storeCommand(self.factory(arg))
+        return invoker
+
+
+
+
+
+
+
+class Search():
+
+    def __init__(self, query, searchIndex):
+        self.__query = query
+        self.__searchIndex = searchIndex
+
     def execute(self):
-        pass
-
-class Search(Command):
-
-    def __init__(self, )
-    def 
+        results = self.__searchIndex.search(query)
+        resultImages = self.__searchIndex.listResultIms(results)
+        searchResults = SearchResults(resultImages, None, self.__query)
+        searchResults.displayResults()
