@@ -68,7 +68,7 @@ class UserController:
                     imPath = "./ims/" + args[i + 1]
                     if os.path.exists(imPath):
                         #image exists
-                        finalArguments.append("addImage", imPath)
+                        finalArguments.append(("addImage", imPath))
 
                     else:
                         print(args[i + 2], "does not exist in ./ims/")

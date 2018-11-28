@@ -11,13 +11,14 @@ class DocumentController:
 
 
     def __init__(self, documents, searchIndex):
-        self.__documents = []
+        self.__documents = documents
         self.__credentials = json.loads(open("./controller/apicreds.json", "r").read())
         self.__APIKEY = self.__credentials["api_key"]
         self.__searchIndex = searchIndex
 
     def createDocument(self, docPath, tags):
-        newDoc = Image(docPath, True, False, tags, docPath.split("/")[-1])
+        newDoc = Image(docPath, True, False, docPath.split("/")[-1], tags)
+
         return newDoc
 
     def addDocument(self, document):
