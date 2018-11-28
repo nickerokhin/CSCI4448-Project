@@ -1,4 +1,5 @@
 import sys
+import os
 sys.path.append('../')
 sys.path.append('../models')
 sys.path.append('../views')
@@ -47,6 +48,31 @@ class UserController:
                     for i in range(0, len(querytokens)):
                         querytokens[i] = querytokens[i].strip()
                     finalArguments.append(("search", querytokens))
+            
+            if args[i] == "add":
+                try:
+                    numImgs = int(args[i + 1])
+                    images = args[i + 2: i + 2 + numImgs + 1]
+                    imagesToAdd = []
+                    for im in images:
+                        if os.path.exists("./im/" + im):
+                            imagesToAdd.append(im)
+                        else:
+                            print(im, "not found")
+
+                    finalArguments.append("addImageBulk", imagesToAdd)
+
+                except:
+                    #Assume the next argument is an image
+                    #First verify the image exists, assuming it is in the ./ims directory
+                    imPath = "./ims/" + args[i + 1]
+                    if os.path.exists(imPath):
+                        #image exists
+                        finalArguments.append("addImage", imPath)
+
+                    else:
+                        print(args[i + 2], "does not exist in ./ims/")
+
         return finalArguments
 
     def createCommands(self, arguments):
