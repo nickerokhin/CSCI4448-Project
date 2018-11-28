@@ -6,7 +6,6 @@ import base64
 from models.Image import Image
 import os
 import pickle
-from models.SearchIndex import SearchIndex
 
 class DocumentController:
 
@@ -17,10 +16,23 @@ class DocumentController:
         self.__APIKEY = self.__credentials["api_key"]
         self.__searchIndex = searchIndex
 
+    def createDocument(self, docPath, tags):
+        newDoc = Image(docPath, True, False, tags, docPath.split("/")[-1])
+        return newDoc
 
+    def addDocument(self, document):
+        self.__documents.append(document)
 
-    def addDocument(self, docPath):
-        self.__documents.append(docPath)
+    def addDocumentToIndex(self, document):
+        self.addDocument(document)
+        self.__searchIndex.createVectorIndexMap(self.__documents)
+        self.__searchIndex.setDocumentCount(len(self.__documents))
+        self.__searchIndex.createDocumentMatrixMap(self.__documents)
+        self.__searchIndex.constructDocumentMatrix(self.__documents)
+
+    def addDocumentToIndexBatch(self, documents):
+        pass
+
 
     def removeDocument(self, docPath):
         self.__documents.remove(docPath)
