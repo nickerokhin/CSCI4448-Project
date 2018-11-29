@@ -126,6 +126,16 @@ class SaveMatrix:
         self.__searchIndex.saveMatrix()
         print("Search index saved")
 
+class SaveDocuments:
+    
+    def __init__(self, documentController):
+        self.__documentController = documentController
+
+    def execute(self):
+        print("Saving images...")
+        self.__documentController.saveDocuments()
+        print("Images saved successfully")
+
 
 
 
