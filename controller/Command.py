@@ -162,7 +162,7 @@ class Tags:
     def execute(self):
         tags = self.__searchIndex.getAllTags()
         reporter = Reporting()
-        reporter.printTags()
+        reporter.printTags(tags)
         
 
 
