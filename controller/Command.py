@@ -42,7 +42,13 @@ class CommandFactory:
             
         elif typ[0] == "list":
             return List(self.__documentController.getDocuments())
-            
+
+        elif typ[0] == "man":
+            return Manual()
+
+        elif typ[0] == "tags":
+            return Tags(self.__searchIndex)
+
     def makeCommandsFromArguments(self, args):
         for arg in args:
             self.__invoker.storeCommand(self.factory(arg))
@@ -141,6 +147,24 @@ class List:
     def execute(self):
         reporter = Reporting()
         reporter.listResults(self.__ls)
+
+class Manual:
+
+    def execute(self):
+        reporter = Reporting()
+        reporter.printMan()
+
+class Tags:
+
+    def __init__(self, searchIndex):
+        self.__searchIndex = searchIndex 
+
+    def execute(self):
+        tags = self.__searchIndex.getAllTags()
+        reporter = Reporting()
+        reporter.printTags()
+        
+
 
 
 
