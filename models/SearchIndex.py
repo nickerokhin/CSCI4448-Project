@@ -78,6 +78,10 @@ class SearchIndex:
                 vec[self.__tagVectorIndexMap[q]] = 1
         return vec
 
+    def getAllTags(self):
+        tags = [t for t in self.__tagVectorIndexMap]
+        return tags
+
     def addDocument(self, vector):
         pass
 
