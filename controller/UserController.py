@@ -79,7 +79,11 @@ class UserController:
                     finalArguments.append(("displayImages", num))
                 except:
                     print("Please specify a number after this command")
-                    
+
+            if args[i] == "save":
+                finalArguments.append(("save"))
+
+
 
 
 
