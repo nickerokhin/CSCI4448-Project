@@ -22,7 +22,7 @@ class SearchIndex:
             SearchIndex.__instance = self
 
         self.__documentMatrix = None
-
+        self.__recentResults = []
         self.__columnSize = columnSize
         self.__documentMatrixMap = {}
         self.__documentMap = documentMap
@@ -34,6 +34,7 @@ class SearchIndex:
 
     def createVectorIndexMap(self, documents):
         tags = []
+        self.__tagVectorIndexMap = {}
         for doc in documents:
             tags += doc.getTags()
 
@@ -42,13 +43,13 @@ class SearchIndex:
             self.__tagVectorIndexMap[tags[tagIdx]] = tagIdx
 
         self.__vectorSize = len(self.__tagVectorIndexMap)
-        print(self.__tagVectorIndexMap)
+        #print(self.__tagVectorIndexMap)
 
     def createDocumentMatrixMap(self, documents):
         for doc in range(0, len(documents)):
             self.__documentMatrixMap[doc] = documents[doc].getDocumentPath()
 
-        print(self.__documentMatrixMap)
+        #print(self.__documentMatrixMap)
 
 
     def createDocumentVector(self, document):
@@ -64,8 +65,8 @@ class SearchIndex:
         self.__documentMatrix = np.zeros((self.__documentCount, self.__vectorSize))
         for idx in range(0, len(documents)):
             self.__documentMatrix[idx] = self.createDocumentVector(documents[idx])
-
-        print(self.__documentMatrix)
+        #print(documents)
+        #print(self.__documentMatrix)
         
     def constructQueryVector(self, queryTerms):
         #This could be more robust, for demo purposes only
@@ -112,9 +113,14 @@ class SearchIndex:
         res = [self.__documentMatrixMap[tup[1]] for tup in results]
         return res
 
+    def getMostRecentResults(self):
+        return self.__recentResults
+
+    def setMostRecentResults(self, results):
+        self.__recentResults = results
+
     def saveMatrix(self):
         pass
 
     def loadMatrix(self):
         pass
-
