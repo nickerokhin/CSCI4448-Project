@@ -20,9 +20,14 @@ class Reporting:
         cv2.waitKey(0)
         cv2.destroyAllWindows()
 
+    def listResults(self, res):
+        print("Listing documents:")
+        for r in res:
+            print(r.getName())
 
 
 
-    
+
+
 
 
