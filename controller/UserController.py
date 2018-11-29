@@ -55,7 +55,7 @@ class UserController:
                     images = args[i + 2: i + 2 + numImgs + 1]
                     imagesToAdd = []
                     for im in images:
-                        if os.path.exists("./im/" + im):
+                        if os.path.exists("./ims/" + im):
                             imagesToAdd.append(im)
                         else:
                             print(im, "not found")
@@ -72,6 +72,16 @@ class UserController:
 
                     else:
                         print(args[i + 2], "does not exist in ./ims/")
+            
+            if args[i] == "showResultIms":
+                try:
+                    num = int(args[i + 1])
+                    finalArguments.append(("displayImages", num))
+                except:
+                    print("Please specify a number after this command")
+                    
+
+
 
         return finalArguments
 

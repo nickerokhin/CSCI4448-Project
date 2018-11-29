@@ -47,9 +47,10 @@ class SearchIndex:
 
     def createDocumentMatrixMap(self, documents):
         for doc in range(0, len(documents)):
-            self.__documentMatrixMap[doc] = documents[doc].getDocumentPath()
+            self.__documentMatrixMap[doc] = documents[doc].getName()
 
         #print(self.__documentMatrixMap)
+
 
 
     def createDocumentVector(self, document):

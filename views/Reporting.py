@@ -11,11 +11,15 @@ class Reporting:
     def viewImages(self, ims):
 
         for im in ims:
-            docPath = im.getDocumentPath()
-            img = cv2.imread(docPath, 0)
-            imName = im.getName()
+            im = "./ims/" + im
+            img = cv2.imread(im, 0)
+            imName = im.split("/")[-1]
+            cv2.namedWindow(imName, cv2.WINDOW_NORMAL)
             cv2.imshow(imName, img)
-            
+        
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+
 
 
 
