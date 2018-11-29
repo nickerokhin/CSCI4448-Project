@@ -52,17 +52,20 @@ class UserController:
             if args[i] == "add":
                 try:
                     numImgs = int(args[i + 1])
-                    images = args[i + 2: i + 2 + numImgs + 1]
+                    images = args[i + 2: i + 2 + numImgs]
+                    print("Images:", images)
                     imagesToAdd = []
                     for im in images:
-                        if os.path.exists("./ims/" + im):
-                            imagesToAdd.append(im)
+                        imPath = "./ims/" + im
+                        if os.path.exists(imPath):
+                            imagesToAdd.append(imPath)
                         else:
-                            print(im, "not found")
+                            print(imPath, "not found")
 
-                    finalArguments.append("addImageBulk", imagesToAdd)
+                    finalArguments.append(("addImageBulk", imagesToAdd))
 
-                except:
+                except Exception as e:
+                    print(e)
                     #Assume the next argument is an image
                     #First verify the image exists, assuming it is in the ./ims directory
                     imPath = "./ims/" + args[i + 1]
@@ -81,8 +84,10 @@ class UserController:
                     print("Please specify a number after this command")
 
             if args[i] == "save":
-                finalArguments.append(("save"))
+                finalArguments.append(("save",))
 
+            if args[i] == "ls":
+                finalArguments.append(("list",))
 
 
 
