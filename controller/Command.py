@@ -59,7 +59,7 @@ class Search:
         resultImages = self.__searchIndex.listResultIms(results)
         searchResults = SearchResults(resultImages, None, self.__query)
         searchResults.displayResults()
-        self.__searchIndex.setMostRecentResults(results)
+        self.__searchIndex.setMostRecentResults(resultImages)
 
 
 class AddImage:
@@ -93,14 +93,15 @@ class AddImageBulk:
 
 class DisplayImages:
 
-    def __init__(self, results, searchIndex, documentController):
-        self.__results = results
+    def __init__(self, num, searchIndex, documentController):
+        self.__num = num
         self.__searchIndex = searchIndex
         self.__documentController = documentController
 
     def execute(self):
         reporter = Reporting()
-        reporter.viewImages(self.__results)
+        results = self.__searchIndex.getMostRecentResults()
+        reporter.viewImages(results[:self.__num])
 
 
 
