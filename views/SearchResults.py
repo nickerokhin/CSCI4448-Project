@@ -7,6 +7,7 @@ class SearchResults:
         self.__threshold = threshold
         self.__numResults = len(queryResults)
         self.__queryTags = queryTags
+        self.__numDispResults = 3
 
     def getNumResults(self):
         return self.__numResults
@@ -31,9 +32,9 @@ class SearchResults:
 
     def displayResults(self):
         print("Your query was {}".format(" ".join(self.__queryTags)))
-        print("Showing {} results for your query\n".format(len(self.__queryResults)))
+        print("Showing top {} results for your query\n".format(self.__numDispResults))
         
-        for i in self.__queryResults:
+        for i in self.__queryResults[:self.__numDispResults]:
             print(i + "\n")
 
 
