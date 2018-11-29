@@ -57,10 +57,13 @@ class CommandFactory:
 
 
 
+class Command(object):
+
+    def execute(self):
+        pass
 
 
-
-class Search:
+class Search(Command):
 
     def __init__(self, query, searchIndex):
         self.__query = query
@@ -74,7 +77,7 @@ class Search:
         self.__searchIndex.setMostRecentResults(resultImages)
 
 
-class AddImage:
+class AddImage(Command):
 
     def __init__(self, imPath, searchIndex, documentController):
         self.__imPath = imPath
@@ -92,7 +95,7 @@ class AddImage:
         reporter = Reporting()
         reporter.viewAddResults([doc])
 
-class AddImageBulk:
+class AddImageBulk(Command):
 
     def __init__(self, ims, searchIndex, documentController):
         self.__ims = ims
@@ -113,7 +116,7 @@ class AddImageBulk:
         
 
 
-class DisplayImages:
+class DisplayImages(Command):
 
     def __init__(self, num, searchIndex, documentController):
         self.__num = num
@@ -125,7 +128,7 @@ class DisplayImages:
         results = self.__searchIndex.getMostRecentResults()
         reporter.viewImages(results[:self.__num])
 
-class Save:
+class Save(Command):
     
     def __init__(self, searchIndex, documentController):
         self.__searchIndex = searchIndex
@@ -139,7 +142,7 @@ class Save:
         self.__documentController.saveDocuments()
         print("Images saved successfully")
 
-class List:
+class List(Command):
 
     def __init__(self, ls):
         self.__ls = ls
@@ -148,13 +151,13 @@ class List:
         reporter = Reporting()
         reporter.listResults(self.__ls)
 
-class Manual:
+class Manual(Command):
 
     def execute(self):
         reporter = Reporting()
         reporter.printMan()
 
-class Tags:
+class Tags(Command):
 
     def __init__(self, searchIndex):
         self.__searchIndex = searchIndex 
