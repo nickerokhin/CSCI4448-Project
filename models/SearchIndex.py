@@ -1,6 +1,7 @@
 from models.DocumentVector import DocumentVector
 import numpy as np
 from scipy import spatial
+import pickle
 
 
 
@@ -121,7 +122,10 @@ class SearchIndex:
         self.__recentResults = results
 
     def saveMatrix(self):
-        pass
+        out = open("./controller/searchindex", "wb")
+        pickle.dump(self, out)
+        out.close()
+        print("Successfully saved SearchIndex")
 
     def loadMatrix(self):
         pass
