@@ -1,6 +1,7 @@
 import requests
 import sys
 sys.path.append('../')
+sys.path.append('../models')
 import json
 import base64
 from models.Image import Image
@@ -15,14 +16,15 @@ class DocumentController:
         self.__credentials = json.loads(open("./controller/apicreds.json", "r").read())
         self.__APIKEY = self.__credentials["api_key"]
         self.__searchIndex = searchIndex
+        self.__picklePath = "./controller/pickedims"
 
     def createDocument(self, docPath, tags):
         newDoc = Image(docPath, True, False, docPath.split("/")[-1], tags)
-
         return newDoc
 
     def addDocument(self, document):
         self.__documents.append(document)
+
 
     def addDocumentToIndex(self, document):
         self.addDocument(document)
@@ -34,6 +36,10 @@ class DocumentController:
     def addDocumentToIndexBatch(self, documents):
         pass
 
+    def saveDocuments(self):
+        out = open(self.__picklePath, "wb")
+        pickle.dump(self.__documents, out)
+        out.close()
 
     def removeDocument(self, docPath):
         self.__documents.remove(docPath)
@@ -83,15 +89,15 @@ class DocumentController:
         pass
 
 
-
-
-#imList = os.listdir('./ims')
-#tagsArray = [doc.getTagsFromCloud("./ims/" + path) for path in imList]
-#ImagesArray = [Image(imList[path], True, False, "./ims/" + imList[path], tagsArray[path]) for path in range(0, len(tagsArray))]
-#out = open("pickedims", "wb")
-#pickle.dump(ImagesArray, out)
-#out.close()
 '''
+doc = DocumentController(None, None)
+imList = os.listdir('../ims')
+tagsArray = [doc.getTagsFromCloud("../ims/" + path) for path in imList]
+ImagesArray = [Image("./ims/" + imList[path], True, False, imList[path], tagsArray[path]) for path in range(0, len(tagsArray))]
+out = open("pickedims", "wb")
+pickle.dump(ImagesArray, out)
+out.close()
+
 infile = open("pickedims", "rb")
 ImagesArray = pickle.load(infile)
 infile.close()
