@@ -1,5 +1,6 @@
 import abc
 from views.SearchResults import SearchResults
+from views.Reporting import Reporting
 from controller.DocumentController import DocumentController
 
 class Invoker:
@@ -30,6 +31,12 @@ class CommandFactory:
         elif typ[0] == "addImage":
             return AddImage(typ[1], self.__searchIndex, self.__documentController)
 
+        elif typ[0] == "addImageBulk":
+            return AddImageBulk(typ[1], self.__searchIndex,  self.__documentController)
+
+        elif typ[0] == "displayImages":
+            return DisplayImages(typ[1], self.__searchIndex, self.__documentController)
+
     def makeCommandsFromArguments(self, args):
         for arg in args:
             self.__invoker.storeCommand(self.factory(arg))
@@ -52,6 +59,7 @@ class Search:
         resultImages = self.__searchIndex.listResultIms(results)
         searchResults = SearchResults(resultImages, None, self.__query)
         searchResults.displayResults()
+        self.__searchIndex.setMostRecentResults(results)
 
 
 class AddImage:
@@ -69,6 +77,32 @@ class AddImage:
         doc = self.__documentController.createDocument(self.__imPath, tags)
         #Now that we have the document, we must add it to the search index
         self.__documentController.addDocumentToIndex(doc)
+        reporter = Reporting()
+        reporter.viewAddResults([doc])
+
+class AddImageBulk:
+
+    def __init__(self, ims, searchIndex, documentController):
+        self.__ims = ims
+        self.__searchIndex = searchIndex
+        self.__documentController = documentController
+
+    def execute(self):
+        pass
+        #for im in self.__ims
+
+class DisplayImages:
+
+    def __init__(self, results, searchIndex, documentController):
+        self.__results = results
+        self.__searchIndex = searchIndex
+        self.__documentController = documentController
+
+    def execute(self):
+        reporter = Reporting()
+        reporter.viewImages(self.__results)
+
+
 
 
 
