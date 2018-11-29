@@ -26,6 +26,14 @@ class UserController:
     def parseArguments(self):
         args = self.arguments.split(" ")
         finalArguments = []
+
+        if len(args) == 1:
+            if args[0] == 'man':
+                return [("man",)]
+            elif args[0] == "tags":
+                return [("tags",)]
+
+
         for i in range(0, len(args)):
             if args[i] == "search":
                 if args[i + 1] == "q/":
