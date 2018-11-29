@@ -13,7 +13,7 @@ class Invoker:
 
     def executeCommands(self):
         while len(self.__commands):
-            cmd = self.__commands.pop()
+            cmd = self.__commands.pop(0)
             cmd.execute()
 
 
@@ -36,6 +36,9 @@ class CommandFactory:
 
         elif typ[0] == "displayImages":
             return DisplayImages(typ[1], self.__searchIndex, self.__documentController)
+
+        elif typ[0] == "save":
+            return SaveMatrix(self.__searchIndex)
 
     def makeCommandsFromArguments(self, args):
         for arg in args:
@@ -88,8 +91,18 @@ class AddImageBulk:
         self.__documentController = documentController
 
     def execute(self):
-        pass
-        #for im in self.__ims
+        
+        allDocs = []
+        for im in self.__ims:
+            tags = self.__documentController.getTagsFromCloud(im)
+            doc = self.__documentController.createDocument(im, tags)
+            self.__documentController.addDocumentToIndex(doc)
+            allDocs.append(doc)
+        reporter = Reporting()
+        reporter.viewAddResults(allDocs)
+
+        
+
 
 class DisplayImages:
 
@@ -102,6 +115,16 @@ class DisplayImages:
         reporter = Reporting()
         results = self.__searchIndex.getMostRecentResults()
         reporter.viewImages(results[:self.__num])
+
+class SaveMatrix:
+    
+    def __init__(self, searchIndex):
+        self.__searchIndex = searchIndex
+
+    def execute(self):
+        print("Saving search index...")
+        self.__searchIndex.saveMatrix()
+        print("Search index saved")
 
 
 
