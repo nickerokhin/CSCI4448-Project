@@ -38,8 +38,11 @@ class CommandFactory:
             return DisplayImages(typ[1], self.__searchIndex, self.__documentController)
 
         elif typ[0] == "save":
-            return SaveMatrix(self.__searchIndex)
-
+            return Save(self.__searchIndex, self.__documentController)
+            
+        elif typ[0] == "list":
+            return List(self.__documentController.getDocuments())
+            
     def makeCommandsFromArguments(self, args):
         for arg in args:
             self.__invoker.storeCommand(self.factory(arg))
@@ -116,25 +119,29 @@ class DisplayImages:
         results = self.__searchIndex.getMostRecentResults()
         reporter.viewImages(results[:self.__num])
 
-class SaveMatrix:
+class Save:
     
-    def __init__(self, searchIndex):
+    def __init__(self, searchIndex, documentController):
         self.__searchIndex = searchIndex
+        self.__documentController = documentController
 
     def execute(self):
         print("Saving search index...")
         self.__searchIndex.saveMatrix()
         print("Search index saved")
-
-class SaveDocuments:
-    
-    def __init__(self, documentController):
-        self.__documentController = documentController
-
-    def execute(self):
         print("Saving images...")
         self.__documentController.saveDocuments()
         print("Images saved successfully")
+
+class List:
+
+    def __init__(self, ls):
+        self.__ls = ls
+
+    def execute(self):
+        reporter = Reporting()
+        reporter.listResults(self.__ls)
+
 
 
 
